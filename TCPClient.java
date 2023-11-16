@@ -49,8 +49,12 @@ public class TCPClient {
                 // Send sentence to server
                 outToServer.write(sendData);
 
+                // Read length of incoming data
+                int len = inFromServer.read();
+                System.out.print(len);
+
                 // Receive response from server
-                byte[] responseData = inFromServer.readNBytes(12);
+                byte[] responseData = inFromServer.readNBytes(len);
                 String response = new String(responseData, 0, responseData.length, StandardCharsets.UTF_16);
 
                 long endTime = System.currentTimeMillis();

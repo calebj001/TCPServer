@@ -77,6 +77,8 @@ public class TCPServer {
                         break;
                     }        
                 }
+                // Formatting line for multiple submissions
+                System.out.println(" ");
             }
             
             clientSocket.close();
