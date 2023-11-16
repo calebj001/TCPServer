@@ -1,7 +1,7 @@
 import java.io.*;
 import java.net.*;
 
-public class myFirstTCPServer {
+public class TCPServer {
     public static void main(String[] args) {
         if (args.length != 1) {
             System.out.println("Usage: java myFirstTCPServer <port>");
@@ -21,10 +21,10 @@ public class myFirstTCPServer {
                 DataInputStream inFromClient = new DataInputStream(clientSocket.getInputStream());
                 DataOutputStream outToClient = new DataOutputStream(clientSocket.getOutputStream());
 
-                for (int i = 0; i < 7; i++) {
-                    // Receive sentence from client
-                    byte[] sentenceBytes = new byte[12]; // 2 bytes for each character in the sentence
-                    int bytesRead = inFromClient.read(sentenceBytes);
+                while (true) {
+                    // Create a byte array to receive the client's packet
+                    byte[] receiveData = new byte[1024];
+                    short bytesRead = (short) inFromClient.read(receiveData);
 
                     if (bytesRead == -1) {
                         // End of stream reached, client disconnected
@@ -34,12 +34,12 @@ public class myFirstTCPServer {
                     // Display received bytes
                     System.out.print("Received bytes: ");
                     for (int j = 0; j < bytesRead; j++) {
-                        System.out.print(String.format("0x%02X ", sentenceBytes[j]));
+                        System.out.print(String.format("0x%02X ", receiveData[j]));
                     }
                     System.out.println();
 
                     // Convert bytes to sentence (short integer)
-                    String sentence = new String(sentenceBytes, 0, bytesRead, "UTF-16BE");
+                    String sentence = new String(receiveData, 0, bytesRead, "UTF-16BE");
 
                     try {
                         short response = Short.parseShort(sentence);
