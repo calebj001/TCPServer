@@ -57,7 +57,7 @@ public class TCPServer {
                     byte[] responseData = responseString.toString().getBytes(StandardCharsets.UTF_16);
 
                     // Print encoded response after UTF-16 standard encoding
-                    System.out.println("Echo response being sent: ");
+                    System.out.print("\nEcho response being sent: ");
                     for (byte b : responseData) {
                         String st = String.format("%02X", b);
                         System.out.print("0x" + st + " ");

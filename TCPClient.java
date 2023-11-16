@@ -65,7 +65,7 @@ public class TCPClient {
                 count++;
 
                 // Display received bytes
-                System.out.print("Byte stream being received: ");
+                System.out.print("\nByte stream being received: ");
                 for (int i = 0; i < responseData.length; i++) {
                     String st = String.format("%02X", responseData[i]);
                     System.out.print("0x" + st + " ");
@@ -91,6 +91,7 @@ public class TCPClient {
                     input.close();
                     break;
                 }
+                System.out.println(" ");
             }
             // Calculate average RTT
             avgRTT = totalRTT / count;
