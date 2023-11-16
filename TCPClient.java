@@ -50,7 +50,7 @@ public class TCPClient {
                 outToServer.write(sendData);
 
                 // Receive response from server
-                byte[] responseData = inFromServer.readAllBytes();
+                byte[] responseData = inFromServer.readNBytes(12);
                 String response = new String(responseData, 0, responseData.length, StandardCharsets.UTF_16);
 
                 long endTime = System.currentTimeMillis();
