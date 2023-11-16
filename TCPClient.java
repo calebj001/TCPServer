@@ -1,5 +1,6 @@
 import java.io.*;
 import java.net.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 public class TCPClient {
@@ -49,18 +50,19 @@ public class TCPClient {
                 outToServer.write(sendData);
 
                 // Receive response from server
-                short response = inFromServer.readShort();
+                byte[] responseData = inFromServer.readAllBytes();
+                String response = new String(responseData, 0, responseData.length, StandardCharsets.UTF_16);
 
-                long endTime;
+                long endTime = System.currentTimeMillis();
                 count++;
 
                 // Display received bytes
-                System.out.print("Received bytes: ");
-                System.out.print(String.format("0x%02X ", (byte) (response >> 8)));
-                System.out.print(String.format("0x%02X ", (byte) (response & 0xFF)));
-                System.out.println();
-
-                endTime = System.currentTimeMillis();
+                System.out.print("Byte stream being received: ");
+                for (int i = 0; i < responseData.length; i++) {
+                    String st = String.format("%02X", responseData[i]);
+                    System.out.print("0x" + st + " ");
+                }
+                
                 long rtt = endTime - startTime;
 
                 // Update min, max, and total RTT
@@ -68,7 +70,7 @@ public class TCPClient {
                 maxRTT = Math.max(maxRTT, rtt);
                 totalRTT += rtt;
 
-                System.out.println("Received response: " + response + " (RTT: " + rtt + "ms)");
+                System.out.println("\nReceived response value: " + response + " (RTT: " + rtt + "ms)");
         
                 /* Prompts user to enter Y (yes) or N (no) depending on if they wish 
                 to continue sending from client */
